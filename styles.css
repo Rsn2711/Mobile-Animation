@@ -1,0 +1,159 @@
+:root {
+    --bg-color: #050505;
+    --gap: 20px;
+    --scroll-duration-fast: 20s;
+    --scroll-duration-slow: 30s;
+    --scroll-duration-medium: 25s;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.marquee-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--gap);
+    width: 180%;
+    /* Increased from 120% to drastically fill corners */
+    height: 180vh;
+    /* Increased from 120% */
+    transform: rotate(-45deg) scale(0.9);
+    /* Reduced from 1.5 to 0.9 for zoom out effect */
+    padding: 0 2rem;
+    max-width: none;
+}
+
+.marquee-column {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* Minimal edge blur as requested */
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 0.5%, black 99.5%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 0.5%, black 99.5%, transparent);
+    gap: var(--gap);
+}
+
+.marquee-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    width: 100%;
+}
+
+/* Items */
+.phone-item {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 19;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.phone-item img.frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1;
+    /* Moved to background */
+    pointer-events: none;
+}
+
+.phone-item img.screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 92.5%;
+    /* Calculated for even bezel thickness */
+    height: 97.5%;
+    /* Calculated for even bezel thickness */
+    object-fit: cover;
+    z-index: 2;
+    border-radius: 40px;
+    border: 6px solid #121212;
+    /* Dark bezel to blend seamlessly */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+    /* Stronger inner shadow */
+}
+
+/* Animations */
+.column-down .marquee-content {
+    animation: scroll-down linear infinite;
+}
+
+.column-up .marquee-content {
+    animation: scroll-up linear infinite;
+}
+
+/* Different speeds for variety */
+.marquee-column:nth-child(1) .marquee-content {
+    animation-duration: var(--scroll-duration-slow);
+}
+
+.marquee-column:nth-child(2) .marquee-content {
+    animation-duration: var(--scroll-duration-medium);
+}
+
+.marquee-column:nth-child(3) .marquee-content {
+    animation-duration: var(--scroll-duration-fast);
+}
+
+.marquee-column:nth-child(4) .marquee-content {
+    animation-duration: var(--scroll-duration-medium);
+}
+
+.marquee-column:nth-child(5) .marquee-content {
+    animation-duration: var(--scroll-duration-slow);
+}
+
+
+@keyframes scroll-down {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes scroll-up {
+    from {
+        transform: translateY(0%);
+    }
+
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+
+/* Vignette Removed */
+
+@media (max-width: 768px) {
+    body {
+        background-image: url('screens/screen9.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}
